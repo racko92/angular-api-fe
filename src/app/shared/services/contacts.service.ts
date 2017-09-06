@@ -6,11 +6,7 @@ import { Observable, Observer } from 'rxjs';
 @Injectable()
 export class ContactsService {
 
-  private contacts: Contact[] = [
-    new Contact(1, 'John', 'Doe', 'john@example.com'),
-    new Contact(2, 'Daniel', 'Ros', 'daniel@example.com'),
-    new Contact(3, 'Martin', 'Hess', 'martin@example.com')
-  ];
+  private contacts: Contact[] = [];
   private idCount: number = 3;
 
   constructor(private http: HttpClient) { }
@@ -18,8 +14,13 @@ export class ContactsService {
   public getContacts()
   {
     return new Observable((o: Observer<any>) => {
-      o.next(this.contacts);
-      return o.complete();
+      this.http.get('http://localhost:8000/api/contacts').subscribe((contacts : any[]) => {
+        this.contacts = contacts.map((contact) => {
+          return new Contact(contact.id, contact.first_name, contact.last_name, contact.email);
+        });
+        o.next(this.contacts);
+        return o.complete();
+      });
     });
   }
 
