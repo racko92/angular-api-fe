@@ -27,10 +27,6 @@ export class ContactsService {
   public addContact(contact: Contact)
   {
     return new Observable((o: Observer<any>) => {
-      // this.idCount++;
-
-
-
       this.http.post('http://localhost:8000/api/contacts', {
           first_name: contact.firstName,
           last_name: contact.lastName,
@@ -49,13 +45,21 @@ export class ContactsService {
   public editContact(contact: Contact)
   {
     return new Observable((o: Observer<any>) => {
-      let existing = this.contacts.filter(c => c.id == contact.id);
-      if (existing.length) {
-        Object.assign(existing[0], contact);
-      }
+      this.http.put('http://localhost:8000/api/contacts/' + contact.id, {
+        first_name: contact.firstName,
+        last_name: contact.lastName,
+        email: contact.email,
+      }).subscribe((contact: any) => {
 
-      o.next(existing);
-      return o.complete();
+        let existing = this.contacts.filter(c => c.id == contact.id);
+
+        if (existing.length) {
+          Object.assign(existing[0], contact);
+        }
+
+        o.next(existing);
+        return o.complete();
+      })
     });
   }
 
