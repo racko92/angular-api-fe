@@ -38,7 +38,9 @@ export class ContactsService {
           o.next(c);
           return o.complete();
 
-      });
+      }), () => {
+        console.log('Error');
+      }
     });
   }
 
