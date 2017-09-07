@@ -37,7 +37,11 @@ export class ContactsService {
           first_name: contact.firstName,
           last_name: contact.lastName,
           email: contact.email
-      }).subscribe((contact: any) => {
+      },
+      {
+        headers: this.auth.getRequestHeader()
+      }
+    ).subscribe((contact: any) => {
 
           let c = new Contact(contact.id, contact.first_name, contact.last_name, contact.email);  
           this.contacts.push(c);
@@ -57,7 +61,11 @@ export class ContactsService {
         first_name: contact.firstName,
         last_name: contact.lastName,
         email: contact.email,
-      }).subscribe((contact: any) => {
+      },
+      {
+        headers: this.auth.getRequestHeader()
+      }
+    ).subscribe((contact: any) => {
 
         let existing = this.contacts.filter(c => c.id == contact.id);
 
@@ -76,7 +84,10 @@ export class ContactsService {
     return new Observable((o: Observer<any>) => {
       
 
-      this.http.delete('http://localhost:8000/api/contacts/' + contact.id)
+      this.http.delete('http://localhost:8000/api/contacts/' + contact.id,
+      {
+        headers: this.auth.getRequestHeader()
+      })
       .subscribe(() => {
 
           const index = this.contacts.indexOf(contact);
@@ -95,7 +106,11 @@ export class ContactsService {
       //   return o.error('Not found');
       // }
 
-      this.http.get('http://localhost:8000/api/contacts/' + id).subscribe((contact: any) => {
+      this.http.get('http://localhost:8000/api/contacts/' + id,
+      {
+        headers: this.auth.getRequestHeader()
+      })
+      .subscribe((contact: any) => {
 
           let existing = this.contacts.filter(c => c.id == id);
           if (existing.length) {
