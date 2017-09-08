@@ -1,13 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, Observer } from 'rxjs';
+import { Router } from '@angular/router';
+
 @Injectable()
 export class AuthService {
 
   public isAuthenticated: boolean;
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private router: Router
   ) { 
     let token = window.localStorage.getItem('token');
     this.isAuthenticated = !! token;
@@ -29,9 +32,10 @@ export class AuthService {
       });
     });
   }
-  logout(){
+  logout(urlName = 'login'){
     window.localStorage.removeItem('token');
     this.isAuthenticated = false;
+    this.router.navigateByUrl(urlName);
   }
   getRequestHeader(){
     let token = window.localStorage.getItem('token');

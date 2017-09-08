@@ -4,6 +4,9 @@ import { RouterModule, Routes } from '@angular/router';
 import { ContactsComponent } from './components/contacts/contacts.component';
 import { ContactDetailsComponent } from './components/contacts/contact-details/contact-details.component';
 import { LoginComponent } from './components/auth/login.component';
+import { AuthGuard } from './shared/guards/auth.guard';
+import { GuestGuard } from './shared/guards/guest.guard';
+
 
 const appRoutes: Routes = [
   {
@@ -14,10 +17,12 @@ const appRoutes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
+    canActivate: [ GuestGuard ],
   },
   {
     path: 'contacts',
     component: ContactsComponent,
+    canActivate: [ AuthGuard,  ],
     children: [
       {
         path: ':id',
