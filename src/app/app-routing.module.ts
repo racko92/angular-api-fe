@@ -3,10 +3,10 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { ContactsComponent } from './components/contacts/contacts.component';
 import { ContactDetailsComponent } from './components/contacts/contact-details/contact-details.component';
+import { ContactResolver } from './shared/resolvers/contact.resolver';
 import { LoginComponent } from './components/auth/login.component';
 import { AuthGuard } from './shared/guards/auth.guard';
 import { GuestGuard } from './shared/guards/guest.guard';
-
 
 const appRoutes: Routes = [
   {
@@ -22,11 +22,14 @@ const appRoutes: Routes = [
   {
     path: 'contacts',
     component: ContactsComponent,
-    canActivate: [ AuthGuard,  ],
+    canActivate: [ AuthGuard ],
     children: [
       {
         path: ':id',
-        component: ContactDetailsComponent
+        component: ContactDetailsComponent,
+        resolve: {
+          contact: ContactResolver
+        }
       }
     ]
   }

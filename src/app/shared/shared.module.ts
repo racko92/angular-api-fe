@@ -5,6 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AuthService } from './services/auth.service';
 import { AuthGuard } from './guards/auth.guard';
 import { GuestGuard } from './guards/guest.guard';
+import { ContactResolver } from './resolvers/contact.resolver';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { GuestGuard } from './guards/guest.guard';
     ContactsService,
     AuthService,
     AuthGuard,
-    GuestGuard
+    GuestGuard,
+    ContactResolver
   ],
   declarations: [
   ],

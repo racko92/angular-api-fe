@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Contact } from './../models/contact.model';
 import { Observable, Observer } from 'rxjs';
 import { AuthService } from './auth.service';
+
 @Injectable()
 export class ContactsService {
 
@@ -22,7 +23,7 @@ export class ContactsService {
       })
       .subscribe((contacts : any[]) => {
         this.contacts = contacts.map((contact) => {
-          return new Contact(contact.id, contact.first_name, contact.last_name, contact.email);
+          return new Contact(contact);
         });
         o.next(this.contacts);
         return o.complete();
@@ -43,7 +44,7 @@ export class ContactsService {
       }
     ).subscribe((contact: any) => {
 
-          let c = new Contact(contact.id, contact.first_name, contact.last_name, contact.email);  
+          let c = new Contact(contact);  
           this.contacts.push(c);
           o.next(c);
           return o.complete();
@@ -112,12 +113,13 @@ export class ContactsService {
       })
       .subscribe((contact: any) => {
 
-          let existing = this.contacts.filter(c => c.id == id);
-          if (existing.length) {
-            o.next(existing[0]);
-            return o.complete();
-          }
-
+          // let existing = this.contacts.filter(c => c.id == id);
+          // if (existing.length) {
+          //   o.next(existing[0]);
+          //   return o.complete();
+          // }
+        o.next(new Contact(contact));
+        return o.complete();
       })
     });
   }
